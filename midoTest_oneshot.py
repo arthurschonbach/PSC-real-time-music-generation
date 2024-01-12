@@ -22,7 +22,7 @@ oneTime = 60/bpm
 def play_music(output_port):
     
     i_tab = 0 #position dans la progression d'accord
-    boolnote = True #indique le besoin de générer une nouvelle note
+    boolnote_r_r = True #indique le besoin de générer une nouvelle note
     len_tab = len(l_tab)
     v = vecteur_courant
     vrtm = vecteur_rythme
@@ -39,20 +39,20 @@ def play_music(output_port):
             print(root, quality, seventh)
 
         #on gère l'arrivée d'une nouvelle note
-        if boolnote:
+        if boolnote_r:
             tp = main_droite.gen(vrtm) + 1 #le nombre de temps de la note que l'on va jouer
             t_end = time() + tp*oneTime
             new_note = main_droite.gen(v)
             note_on = mido.Message('note_on', note = new_note, velocity = 64) #on enclenche la note
             output_port.send(note_on) #et on commence à la jouer
-            boolnote = False #indique qu'une note est jouée
+            boolnote_r = False #indique qu'une note est jouée
             v = notes.f_note(v, new_note) #la fonction qui modifie v à chaque note
         
         #on regarde si on peut jouer une nouvelle note
         elif time() > t_end:
             note_off = mido.Message('note_off', note = new_note)
             output_port.send(note_off)
-            boolnote = True
+            boolnote_r = True
                 
 
     """while playing:
