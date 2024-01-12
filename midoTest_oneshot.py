@@ -26,7 +26,7 @@ def play_music(output_port):
     len_tab = len(l_tab)
     v = vecteur_courant
     vrtm = vecteur_rythme
-    debut_bar = time
+    debut_bar = time()
     
     while playing:
             
