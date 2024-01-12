@@ -20,13 +20,8 @@ suite_accords = [("A", "Minor", ""), ("D", "Minor", ""), ("G", "Major", ""), ("C
 def gen(liste_probas):
     """on suppose que la somme des probas vaut 1
     retourne un indice de la liste"""
-    x = random()
-    i = 0
-    acc = liste_probas[i]
-    while acc < x:
-        i += 1
-        acc += liste_probas[i]
-    return i
+    n = len(liste_probas)
+    return np.random.choice(n,1, p = liste_probas)[0]
 
 def new_song(v = vecteur_courant, vrtm = vecteur_rythme, l_tab = suite_accords, n_iter = 2):
     pos = 0 #le nombre de temps passés depuis le début de la musique
