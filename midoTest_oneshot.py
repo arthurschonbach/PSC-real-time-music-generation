@@ -22,7 +22,7 @@ oneTime = 60/bpm
 def play_music(output_port):
     
     i_tab = 0 #position dans la progression d'accord
-    boolnote_r_r = True #indique le besoin de générer une nouvelle note
+    boolnote_r = True #indique le besoin de générer une nouvelle note
     len_tab = len(l_tab)
     v = vecteur_courant
     vrtm = vecteur_rythme
