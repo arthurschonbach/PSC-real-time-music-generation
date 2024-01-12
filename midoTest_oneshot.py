@@ -1,7 +1,6 @@
 import mido
 import pygame
 import threading
-import time
 import main_gauche2 as main_gauche
 import main_droite2 as main_droite
 import notes2 as notes
