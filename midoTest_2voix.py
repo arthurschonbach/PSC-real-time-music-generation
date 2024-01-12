@@ -48,10 +48,9 @@ def play_music(output_port):
             v_r = notes.f_newtab(v_r, root, quality, seventh)
             
             #main gauche
-            v_l = notes.f_gamme(v_l, gammes.accord(root, quality, seventh))
+            v_l = notes.f_newtab(v_r, root, quality, seventh)
             
-            
-
+        
         #on gère l'arrivée d'une nouvelle note
         if boolnote_r:
             tp = main_droite.gen(vrtm) + 1 #le nombre de temps de la note que l'on va jouer
@@ -67,7 +66,7 @@ def play_music(output_port):
             note_off = mido.Message('note_off', note = new_note)
             output_port.send(note_off)
             boolnote_r = True
-            
+        
         if boolnote_l:
             tp_l = rtm_l[i_rtm_l]  #le nombre de temps de la note que l'on va jouer
             i_rtm_l = (i_rtm_l + 1)%len_rtm_l
@@ -82,9 +81,6 @@ def play_music(output_port):
             note_off_l = mido.Message('note_off', note = new_note_l)
             output_port.send(note_off_l)
             boolnote_l = True
-                
-
-                
 
     """while playing:
         # Replace this with your own logic to generate MIDI messages
