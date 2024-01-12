@@ -31,7 +31,7 @@ def play_music(output_port):
     v_r = vecteur_init
     v_l = vecteur_init
     vrtm = vecteur_rythme_r
-    debut_bar = time
+    debut_bar = time()
     rtm_l = main_gauche.nouvelle_structure_rythmique(vecteur_rythme_l)
     i_rtm_l = 0
     len_rtm_l = len(rtm_l)
