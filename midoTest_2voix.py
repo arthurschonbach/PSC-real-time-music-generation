@@ -16,10 +16,12 @@ vecteur_rythme_l = np.array([0.2, 0.4, 0.15, 0.2, 0.05, 0, 0, 0]) #le vecteur de
 
 vecteur_init = notes.gauss(notes.init_v(), 50)
 
-l_tab = [('A', 'Minor', ''), ('D', 'Minor', ''), ('G', 'Major', ''), ('G', 'Major', '')]
+l_tab = [('A', 'Minor', ''), ('D', 'Minor', ''), ('G', 'Major', ''), ('C', 'Major', '')]
+scale = gammes.gamme('C', 'Major') 
 
 bpm = 120
 oneTime = 60/bpm
+
 
 # Function to play music
 def play_music(output_port):
@@ -28,8 +30,8 @@ def play_music(output_port):
     boolnote_r = True #indique le besoin de générer une nouvelle note
     boolnote_l = True
     len_tab = len(l_tab)
-    v_r = vecteur_init
-    v_l = vecteur_init
+    v_r = notes.f_gamme(vecteur_init, scale)
+    v_l = notes.f_gamme(vecteur_init, scale)
     vrtm = vecteur_rythme_r
     debut_bar = time()
     rtm_l = main_gauche.nouvelle_structure_rythmique(vecteur_rythme_l)
@@ -48,25 +50,26 @@ def play_music(output_port):
             v_r = notes.f_newtab(v_r, root, quality, seventh)
             
             #main gauche
-            v_l = notes.f_newtab(v_r, root, quality, seventh)
+            v_l = notes.f_newtab(v_l, root, quality, seventh)
             
-        
+            
+
         #on gère l'arrivée d'une nouvelle note
-        if boolnote_r:
-            tp = main_droite.gen(vrtm) + 1 #le nombre de temps de la note que l'on va jouer
-            t_end = time() + tp*oneTime
-            new_note = main_droite.gen(v_r)
-            note_on = mido.Message('note_on', note = new_note, velocity = 64) #on enclenche la note
-            output_port.send(note_on) #et on commence à la jouer
-            boolnote_r = False #indique qu'une note est jouée
-            v_r = notes.f_note(v_r, new_note) #la fonction qui modifie v à chaque note
+        # if boolnote_r:
+        #     tp = main_droite.gen(vrtm) + 1 #le nombre de temps de la note que l'on va jouer
+        #     t_end = time() + tp*oneTime
+        #     new_note = main_droite.gen(v_r)
+        #     note_on = mido.Message('note_on', note = new_note, velocity = 64) #on enclenche la note
+        #     output_port.send(note_on) #et on commence à la jouer
+        #     boolnote_r = False #indique qu'une note est jouée
+        #     v_r = notes.f_note(v_r, new_note) #la fonction qui modifie v à chaque note
         
-        #on regarde si on peut jouer une nouvelle note
-        elif time() > t_end:
-            note_off = mido.Message('note_off', note = new_note)
-            output_port.send(note_off)
-            boolnote_r = True
-        
+        # #on regarde si on peut jouer une nouvelle note
+        # elif time() > t_end:
+        #     note_off = mido.Message('note_off', note = new_note)
+        #     output_port.send(note_off)
+        #     boolnote_r = True
+            
         if boolnote_l:
             tp_l = rtm_l[i_rtm_l]  #le nombre de temps de la note que l'on va jouer
             i_rtm_l = (i_rtm_l + 1)%len_rtm_l
@@ -81,17 +84,7 @@ def play_music(output_port):
             note_off_l = mido.Message('note_off', note = new_note_l)
             output_port.send(note_off_l)
             boolnote_l = True
-
-    """while playing:
-        # Replace this with your own logic to generate MIDI messages
-        # For example, playing a C4 note with velocity 64 for 1 second
-        note_on = mido.Message('note_on', note=60, velocity=64)
-        output_port.send(note_on)
-        time.sleep(1)
-        note_off = mido.Message('note_off', note=60)
-        output_port.send(note_off)
-        time.sleep(1)"""
-
+                
 # Initialize pygame for handling user input
 pygame.init()
 
@@ -133,7 +126,7 @@ while True:
                 # Exit the program
                 playing = False
                 pygame.quit()
-                exit()
+                break
     
     # Update the display
     screen.fill((255, 255, 255))
