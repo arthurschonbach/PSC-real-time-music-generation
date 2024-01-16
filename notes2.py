@@ -135,3 +135,14 @@ def f_note(v, note):
     w = f_prefnotes(w, [note], 0.2)
     w = f_prefnotes(w, [pred(note), note, succ(note)], 2)
     return w
+
+def search_indices(v, val):
+    """renvoie les indices dans v associés aux valeurs. Les deux listes doivent etre triées"""
+    n = len(val)
+    i_v = 0
+    l_indices = []
+    for i in range(n):
+        while v[i_v] != val[i]:
+            i_v += 1
+        l_indices.append(i_v)
+    return l_indices
