@@ -1,4 +1,4 @@
-
+"""elements de solfège basiques"""
 
 def nombre_lettre(n):
 	n0 = n%12
