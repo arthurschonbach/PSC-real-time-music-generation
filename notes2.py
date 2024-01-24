@@ -137,12 +137,16 @@ def f_note(v, note):
     return w
 
 def search_indices(v, val):
-    """renvoie les indices dans v associés aux valeurs. Les deux listes doivent etre triées"""
-    n = len(val)
-    i_v = 0
+    """renvoie les indices dans v associés aux valeurs. les éléments de val doivent etre dans v sinon exeption"""
+    print(v)
+    print(val)
     l_indices = []
-    for i in range(n):
-        while v[i_v] != val[i]:
-            i_v += 1
-        l_indices.append(i_v)
+    len_v = len(v)
+    for i in val:
+        j_v = 0
+        while v[j_v] != i and j_v < len_v:
+            j_v += 1
+        if j_v == len_v:
+            raise ValueError("des éléments de val ne sont pas dans v")
+        l_indices.append(j_v)
     return l_indices
