@@ -33,7 +33,7 @@ def play_music(output_port):
     v_r = notes.f_gamme(vecteur_init, scale)
     v_l = notes.f_gamme(vecteur_init, scale)
     vrtm = vecteur_rythme_r
-    debut_bar = time()
+    debut_bar = time() - 8*oneTime
     rtm_l = main_gauche.nouvelle_structure_rythmique(vecteur_rythme_l)
     i_rtm_l = 0
     len_rtm_l = len(rtm_l)
