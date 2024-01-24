@@ -50,25 +50,26 @@ def play_music(output_port):
             v_r = notes.f_newtab(v_r, root, quality, seventh)
             
             #main gauche
-            v_l = notes.f_newtab(v_l, root, quality, seventh)
+            v_l = vecteur_init
+            v_l = notes.f_gamme(v_l, gammes.accord(root, quality, seventh))
             
             
 
         #on gère l'arrivée d'une nouvelle note
-        # if boolnote_r:
-        #     tp = main_droite.gen(vrtm) + 1 #le nombre de temps de la note que l'on va jouer
-        #     t_end = time() + tp*oneTime
-        #     new_note = main_droite.gen(v_r)
-        #     note_on = mido.Message('note_on', note = new_note, velocity = 64) #on enclenche la note
-        #     output_port.send(note_on) #et on commence à la jouer
-        #     boolnote_r = False #indique qu'une note est jouée
-        #     v_r = notes.f_note(v_r, new_note) #la fonction qui modifie v à chaque note
+        if boolnote_r:
+            tp = main_droite.gen(vrtm) + 1 #le nombre de temps de la note que l'on va jouer
+            t_end = time() + tp*oneTime
+            new_note = main_droite.gen(v_r)
+            note_on = mido.Message('note_on', note = new_note, velocity = 64) #on enclenche la note
+            output_port.send(note_on) #et on commence à la jouer
+            boolnote_r = False #indique qu'une note est jouée
+            v_r = notes.f_note(v_r, new_note) #la fonction qui modifie v à chaque note
         
-        # #on regarde si on peut jouer une nouvelle note
-        # elif time() > t_end:
-        #     note_off = mido.Message('note_off', note = new_note)
-        #     output_port.send(note_off)
-        #     boolnote_r = True
+        #on regarde si on peut jouer une nouvelle note
+        elif time() > t_end:
+            note_off = mido.Message('note_off', note = new_note)
+            output_port.send(note_off)
+            boolnote_r = True
             
         if boolnote_l:
             tp_l = rtm_l[i_rtm_l]  #le nombre de temps de la note que l'on va jouer
