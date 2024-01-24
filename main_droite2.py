@@ -21,6 +21,7 @@ def gen(liste_probas):
     """on suppose que la somme des probas vaut 1
     retourne un indice de la liste"""
     n = len(liste_probas)
+    liste_probas = notes.norm(liste_probas)
     return np.random.choice(n,1, p = liste_probas)[0]
 
 def new_song(v = vecteur_courant, vrtm = vecteur_rythme, l_tab = suite_accords, n_iter = 2):
