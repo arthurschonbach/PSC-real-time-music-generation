@@ -138,8 +138,6 @@ def f_note(v, note):
 
 def search_indices(v, val):
     """renvoie les indices dans v associés aux valeurs. les éléments de val doivent etre dans v sinon exeption"""
-    print(v)
-    print(val)
     l_indices = []
     len_v = len(v)
     for i in val:
