@@ -126,6 +126,8 @@ while True:
                 # Exit the program
                 playing = False
                 pygame.quit()
+                output_port.close()
+
                 break
     
     # Update the display
