@@ -106,3 +106,13 @@ class VoixDroite(Voix):
 
         self.choixInstrument()
     
+    def changeMesure(self):
+        self.v = notes.f_newtab(self.v, self.root, self.quality, self.seventh)
+    
+    def newNote(self):
+        return super().newNote()
+    
+    def durationNote(self, t):
+        tp = main_droite.gen(self.vrtm)
+        t_end = t + tp*self.oneTime
+        return t_end
