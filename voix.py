@@ -49,21 +49,20 @@ class Voix :
         
         if self.boolnote: #une nouvelle note
 
-            self.t_end = self.durationNote(t)
+            self.t_end = t + self.durationNote()
             self.new_note = self.create_newNote()
 
-            
-
-            note_on = mido.Message("note_on", note = self.new_note, channel = self.channel, velocity = self.velocity)
-            self.output_port.send(note_on)
             self.boolnote = False
             self.v = notes.f_note(self.v, self.new_note)
+            
+            return self.new_note
         
         elif time() > self.t_end : #arrêter la note en cours
             note_off = mido.Message("note_off", note = self.new_note, channel = self.channel, velocity = self.velocity)
             self.output_port.send(note_off)
 
             self.boolnote = True
+    
 
 
     def changeMesure(self):
@@ -79,11 +78,11 @@ class Voix :
     def create_newNote(self):
         return main_droite.gen(self.v)
 
-    def durationNote(self, t):
+    def durationNote(self):
         """
         En principe jamais appelé, chaque classe héritée utilisera sa propre version de durationNote
         """
-        return t
+        return 0
 
     def choixInstrument(self):
         """
@@ -121,10 +120,10 @@ class VoixGauche (Voix) :
     def create_newNote(self):
         return super().create_newNote()
     
-    def durationNote(self, t):
+    def durationNote(self):
         tp_l = self.rtm[self.i_rtm]  #le nombre de temps de la note que l'on va jouer
         self.i_rtm = (self.i_rtm + 1)%self.len_rtm
-        return time() + tp_l*self.oneTime
+        return tp_l*self.oneTime
 
 class VoixDroite (Voix) :
     def __init__(self, vecteur_init, vecteur_rythme, l_tab, scale, output_port, tempo=120) -> None:
@@ -142,7 +141,7 @@ class VoixDroite (Voix) :
     def create_newNote(self):
         return super().create_newNote()
     
-    def durationNote(self, t):
+    def durationNote(self):
         tp = main_droite.gen(self.vrtm)
-        t_end = t + tp*self.oneTime
+        t_end = tp*self.oneTime
         return t_end

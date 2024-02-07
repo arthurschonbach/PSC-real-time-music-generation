@@ -32,13 +32,24 @@ def play_music():
     droite = voix.VoixDroite(vecteur_init, vecteur_rythme_r, l_tab, scale, output_port, bpm)
     listVoix["gauche"] = gauche
     listVoix["droite"] = droite
+
     while not quit :
         if playing :
+            #on va laisser chaque voix décider de ce qu'ils veulent faire
+            #si on a une nouvelle note à jouer, on l'ajoute dans notes
+            #puis on joue toutes les notes d'un coup pour ne pas avoir de décalage.
+            notes = {}
             t = time()
-            listVoix["gauche"].nextTime(t)
-            listVoix["droite"].nextTime(t)
-                
-                
+            for i in listVoix:
+                note = listVoix[i].nextTime(t)
+                if note:
+                    notes[i] = note
+
+            for i in notes:
+                note_on = mido.Message("note_on", note = notes[i], channel = listVoix[i].channel, velocity = listVoix[i].velocity)
+                listVoix[i].output_port.send(note_on)                
+            
+
 # Initialize pygame for handling user input
 pygame.init()
 
