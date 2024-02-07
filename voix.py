@@ -26,6 +26,7 @@ class Voix :
         self.vecteur_init = vecteur_init
         self.output_port = output_port
 
+
         # à décider dans les classes
         self.velocity = 64
         # il y a aussi : self.program et self.channel
@@ -51,6 +52,8 @@ class Voix :
             self.t_end = self.durationNote(t)
             self.new_note = self.create_newNote()
 
+            
+
             note_on = mido.Message("note_on", note = self.new_note, channel = self.channel, velocity = self.velocity)
             self.output_port.send(note_on)
             self.boolnote = False
@@ -59,6 +62,7 @@ class Voix :
         elif time() > self.t_end : #arrêter la note en cours
             note_off = mido.Message("note_off", note = self.new_note, channel = self.channel, velocity = self.velocity)
             self.output_port.send(note_off)
+
             self.boolnote = True
 
 
@@ -90,8 +94,13 @@ class Voix :
     
     def changeTempo(self, tempo):
         self.oneTime = 60/tempo
+    
+    def stopSound(self):
+        note_off = mido.Message("note_off", note = self.new_note, channel = self.channel, velocity = self.velocity)
+        self.output_port.send(note_off)
+        self.boolnote = True
 
-class VoixGauche(Voix) : 
+class VoixGauche (Voix) : 
     def __init__(self, vecteur_init, vecteur_rythme, l_tab, scale, output_port, tempo=120) -> None:
         super().__init__(vecteur_init, vecteur_rythme, l_tab, scale, output_port, tempo)
         
@@ -117,11 +126,11 @@ class VoixGauche(Voix) :
         self.i_rtm = (self.i_rtm + 1)%self.len_rtm
         return time() + tp_l*self.oneTime
 
-class VoixDroite(Voix):
+class VoixDroite (Voix) :
     def __init__(self, vecteur_init, vecteur_rythme, l_tab, scale, output_port, tempo=120) -> None:
         super().__init__(vecteur_init, vecteur_rythme, l_tab, scale, output_port, tempo)
 
-        self.channel = 1
+        self.channel = 0
         self.program = 0 #piano
 
         self.choixInstrument()

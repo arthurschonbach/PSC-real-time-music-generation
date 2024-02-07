@@ -24,15 +24,20 @@ bpm = 240
 oneTime = 60/bpm
 
 
+
 # Function to play music
-def play_music(output_port):
+def play_music():
+    listVoix = {}
     gauche = voix.VoixGauche(vecteur_init, vecteur_rythme_l, l_tab, scale, output_port, bpm)
     droite = voix.VoixDroite(vecteur_init, vecteur_rythme_r, l_tab, scale, output_port, bpm)
-    while playing:
-        t = time()
-        gauche.nextTime(t)
-        droite.nextTime(t)
-            
+    listVoix["gauche"] = gauche
+    listVoix["droite"] = droite
+    while not quit :
+        if playing :
+            t = time()
+            listVoix["gauche"].nextTime(t)
+            listVoix["droite"].nextTime(t)
+                
                 
 # Initialize pygame for handling user input
 pygame.init()
@@ -41,11 +46,14 @@ pygame.init()
 output_port_name = 'Microsoft GS Wavetable Synth 0'
 output_port = mido.open_output(output_port_name)
 
+
 # Variable to control music playback
 playing = True
+quit = False
+
 
 # Start the music playback in a separate thread
-music_thread = threading.Thread(target=play_music, args=(output_port,))
+music_thread = threading.Thread(target=play_music, args=())
 music_thread.start()
 
 # Set up the Pygame window
@@ -74,11 +82,14 @@ while True:
             elif event.key == pygame.K_ESCAPE:
                 # Exit the program
                 playing = False
+                quit = True
                 pygame.quit()
                 output_port.close()
                 break
     
     # Update the display
+    if quit:
+        break
     screen.fill((255, 255, 255))
 
     # Display text
