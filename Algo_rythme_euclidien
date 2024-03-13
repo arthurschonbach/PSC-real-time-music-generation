@@ -32,3 +32,14 @@ def rythme_euclidien(k, n, offset = 0):		# k des n temps sont activés. L'offset
 	for i in range(n):
 		L_final_offset[i] = L_final[n+i-offset]
 	return L_final_offset
+
+def format_rythme(L):
+	R = []
+	if L[0] == 0:
+		return format_rythme([1] + L[1:])
+	for e in L:
+		if e == 0:
+			R[-1] += 1
+		else:
+			R.append(1)
+	return R 
