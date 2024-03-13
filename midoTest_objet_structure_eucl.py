@@ -7,7 +7,7 @@ import notes2 as notes
 import numpy as np
 from time import time
 import gammes2 as gammes
-import voix_copy as voix
+import voix_structure_eucl as voix
 
 
 #test variables
@@ -23,6 +23,9 @@ scale = gammes.gamme('C', 'Major')
 bpm = 120
 oneTime = 60/bpm
 
+nb_actif = 8 
+nb_tps = 32
+offset = 0
 
 
 # Function to play music
@@ -30,8 +33,10 @@ def play_music():
     listVoix = {}
     gauche = voix.VoixGauche(vecteur_init, vecteur_rythme_l, l_tab, scale, output_port, bpm)
     droite = voix.VoixDroite(vecteur_init, vecteur_rythme_r, l_tab, scale, output_port, bpm)
+    gauche_eucl = voix.VoixEuclideGauche(vecteur_init, vecteur_rythme_r, l_tab, scale, output_port, nb_actif, nb_tps, offset, bpm)
     listVoix["gauche"] = gauche
     listVoix["droite"] = droite
+    listVoix["gauche_eucl"] = gauche_eucl
 
     while not quit :
         if playing :
