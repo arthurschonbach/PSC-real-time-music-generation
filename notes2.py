@@ -146,6 +146,8 @@ def search_indices(v, val):
         corr[v[i]] = i
 
     for i in val:
+        if i not in corr:
+            ValueError("des éléments de val ne sont pas dans v")
         l_indices.append(corr[i])
 
     return l_indices
