@@ -7,7 +7,7 @@ import notes2 as notes
 import numpy as np
 from time import time
 import gammes2 as gammes
-import voix_copy as voix
+import voix_structure as voix
 import matplotlib.pyplot as plt
 
 #test variables
