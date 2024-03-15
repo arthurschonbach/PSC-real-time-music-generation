@@ -1,6 +1,4 @@
 import mido
-import pygame
-import threading
 import main_gauche2 as main_gauche
 import main_droite2 as main_droite
 import notes2 as notes
@@ -48,6 +46,14 @@ class Voix :
         if time() >= self.oneTime*8 + self.debut_bar: #début de mesure par la fin de la precedente
            self.changeMesure()
         
+        """
+        next euclidien
+        if 1  et on joue pas:
+            joue
+        else : 
+            arrêter
+        """
+       
         if self.boolnote: #une nouvelle note
 
             self.t_end = t + self.durationNote()

@@ -8,7 +8,7 @@ import numpy as np
 from time import time
 import gammes2 as gammes
 import voix_copy as voix
-
+import matplotlib.pyplot as plt
 
 #test variables
 vecteur_rythme_r = notes.norm(np.array([2, 4, 1, 3, 1, 0, 0, 0])) #le vecteur de proba des rythmes
@@ -22,7 +22,6 @@ scale = gammes.gamme('C', 'Major')
 
 bpm = 120
 oneTime = 60/bpm
-
 
 
 # Function to play music
@@ -48,7 +47,7 @@ def play_music():
             for i in notes:
                 note_on = mido.Message("note_on", note = notes[i], channel = listVoix[i].channel, velocity = listVoix[i].velocity)
                 listVoix[i].output_port.send(note_on)                
-            
+
 
 # Initialize pygame for handling user input
 pygame.init()
@@ -61,7 +60,6 @@ output_port = mido.open_output(output_port_name)
 # Variable to control music playback
 playing = True
 quit = False
-
 
 # Start the music playback in a separate thread
 music_thread = threading.Thread(target=play_music, args=())
@@ -76,7 +74,6 @@ pygame.display.set_caption('Music Generator')
 font = pygame.font.Font(None, 36)
 
 loop = -1
-
 # Main loop for handling user input
 while True:
     loop+=1
@@ -112,5 +109,6 @@ while True:
     # Add a small delay to reduce CPU usage
     pygame.time.delay(10)
 # Wait for the music thread to finish before exiting
+
 music_thread.join()
 pygame.quit()
