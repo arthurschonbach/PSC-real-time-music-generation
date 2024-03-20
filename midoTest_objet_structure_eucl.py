@@ -34,7 +34,7 @@ def play_music():
     gauche = voix.VoixGauche(vecteur_init, vecteur_rythme_l, l_tab, scale, output_port, bpm)
     droite = voix.VoixDroite(vecteur_init, vecteur_rythme_r, l_tab, scale, output_port, bpm)
     gauche_eucl = voix.VoixEuclideGauche(vecteur_init, vecteur_rythme_r, l_tab, scale, output_port, nb_actif, nb_tps, offset, bpm)
-    listVoix["gauche"] = gauche
+    #listVoix["gauche"] = gauche
     listVoix["droite"] = droite
     listVoix["gauche_eucl"] = gauche_eucl
 

@@ -181,6 +181,7 @@ class VoixEuclideGauche (Voix) : #même objet que voix gauche, mais avec un vect
         self.channel = 0
         self.program = 0 #piano
 
+        self.rtm = main_gauche.nouvelle_structure_rythmique(self.vrtm)
         
         self.rtm_eucl = Algo_rythme_euclidien.rythme_euclidien(nb_actif, nb_tps, offset)
         self.i_rtm = 0
