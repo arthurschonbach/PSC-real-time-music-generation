@@ -7,6 +7,7 @@ import notes2 as notes
 import numpy as np
 from time import time
 import gammes2 as gammes
+import random as rd
 
 
 #test variables
@@ -15,6 +16,10 @@ vecteur_rythme_l = np.array([0.2, 0.4, 0.15, 0.2, 0.05, 0, 0, 0]) #le vecteur de
 
 
 vecteur_init = notes.gauss(notes.init_v(), 50)
+
+tonic_init = rd.choice(['A', 'B', 'C', 'D', 'E', 'F', 'G'])
+quality_init = rd.choice(['Major', 'Minor'])
+gamme_init = (tonic_init, quality_init)
 
 l_tab = [('A', 'Minor', ''), ('D', 'Minor', ''), ('G', 'Major', ''), ('C', 'Major', '')]
 gamme_init = l_tab[3][:2]
