@@ -21,8 +21,8 @@ tonic_init = rd.choice(['A', 'B', 'C', 'D', 'E', 'F', 'G'])
 quality_init = rd.choice(['Major', 'Minor'])
 gamme_init = (tonic_init, quality_init)
 
-l_tab = [('A', 'Minor', ''), ('D', 'Minor', ''), ('G', 'Major', ''), ('C', 'Major', '')]
-gamme_init = l_tab[3][:2]
+#l_tab = [('A', 'Minor', ''), ('D', 'Minor', ''), ('G', 'Major', ''), ('C', 'Major', '')]
+#gamme_init = l_tab[3][:2]
 scale = gammes.gamme(gamme_init) 
 
 bpm = 120
@@ -31,11 +31,12 @@ oneTime = 60/bpm
 
 # Function to play music
 def play_music(output_port):
-    
-    i_tab = 0 #position dans la progression d'accord
+
+    i_changement_acc = 1
+    #i_tab = 0 #position dans la progression d'accord
     boolnote_r = True #indique le besoin de générer une nouvelle note
     boolnote_l = True
-    len_tab = len(l_tab)
+    #len_tab = len(l_tab)
     v_r = notes.f_gamme(vecteur_init, scale)
     v_l = notes.f_gamme(vecteur_init, scale)
     vrtm = vecteur_rythme_r
@@ -45,7 +46,9 @@ def play_music(output_port):
     i_rtm_l = 0
     len_rtm_l = len(rtm_l)
         
-    root, quality, seventh = l_tab[0]
+    #root, quality, seventh = l_tab[0]
+    seventh = "Dominant"
+    root, quality = gamme_init
     liste_first_tab = gammes.accord(root, quality, seventh)
     
     v_l = notes.f_gamme(v_l, gammes.accord(root, quality, seventh))
@@ -62,8 +65,10 @@ def play_music(output_port):
             
         #on gère le changement d'accord
         if time() >= oneTime*8 + debut_bar: #début de mesure par la fin de la precedente
-            root, quality, seventh = l_tab[i_tab]
-            i_tab = (i_tab + 1)%len_tab
+            #root, quality, seventh = l_tab[i_tab]
+            #i_tab = (i_tab + 1)%len_tab
+            root, quality = boucle_accords.acc_suivi(tonic_init, quality_init, i_changement_acc)
+            i_changement_acc = boucle_accords.nb_suivi(quality_init, i_changement_acc)
             debut_bar += oneTime*8
             
             #main droite
