@@ -1,4 +1,6 @@
 #n = 7 vaut le 7 diminué et n = 8 vaut le 7 majeur pour la gamme mineure
+import numpy.random as rd
+
 def nb_suiv(gamme = "Major", n = 1):
 	if gamme == "Major":
 		if n == 1:
@@ -36,13 +38,64 @@ def nb_suiv(gamme = "Major", n = 1):
 			print("erreur nb_suivi", gamme, n)
 
 
-def acc_suiv(g_root, g_qual, a_root, a_qual):
-	g_n = lettre_nombre(g_root)
-	a_n = lettre_nombre(a_root)
+def acc_suivi(root_init, qual_init, n):
+	L = []
+	if root_init == 'A':
+		L = ['A', 'B', 'C', 'D', 'E', 'F', 'G']
+	elif root_init == 'B':
+		L = ['B', 'C', 'D', 'E', 'F', 'G','A']
+	elif root_init == 'C':
+		L = ['C', 'D', 'E', 'F', 'G','A', 'B']
+	elif root_init == 'D':
+		L = ['D', 'E', 'F', 'G','A', 'B', 'C']
+	elif root_init == 'E':
+		L = ['E', 'F', 'G','A', 'B', 'C', 'D']
+	elif root_init == 'F':
+		L = ['F', 'G','A', 'B', 'C', 'D', 'E']
+	elif root_init == 'G':
+		L = ['G','A', 'B', 'C', 'D', 'E', 'F']
+	else:
+		print("erreur acc_suivi")
+	root_fin = L[n-1]
+	qual_fin = ''
+	if qual_init == 'Major':
+		if n == 1:
+			qual_fin = 'Major'
+		elif n == 2:
+			qual_fin = 'Minor'
+		elif n == 3:
+			qual_fin = 'Minor'
+		elif n == 4:
+			qual_fin = 'Major'
+		elif n == 5:
+			qual_fin = 'Major'
+		elif n == 6:
+			qual_fin = 'Minor'
+		elif n == 7:
+			qual_fin = "Diminished"
+		else:
+			print("erreur acc_suivi")
+	elif qual_init == 'Minor':
+		if n == 1:
+			qual_fin = 'Minor'
+		elif n == 2:
+			qual_fin = 'Diminished'
+		elif n == 3:
+			qual_fin = 'Major'
+		elif n == 4:
+			qual_fin = 'Minor'
+		elif n == 5:
+			qual_fin = 'Major'
+		elif n == 6:
+			qual_fin = 'Major'
+		elif n == 7:
+			qual_fin = 'Diminished'
+		elif n == 8:
+			qual_fin = 'Major'
+		else:
+			print("erreur acc_suivi")
+	else:
+		print("erreur acc_suivi")
+	return (root_fin, qual_fin)
 
 
-n = 1
-print(n)
-for i in range(1000):
-	n = nb_suiv("Major", n)
-	print(n)

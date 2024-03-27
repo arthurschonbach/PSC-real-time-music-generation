@@ -140,11 +140,14 @@ def search_indices(v, val):
     """renvoie les indices dans v associés aux valeurs. les éléments de val doivent etre dans v sinon exeption"""
     l_indices = []
     len_v = len(v)
+    
+    corr = {}
+    for i in range(len_v):
+        corr[v[i]] = i
+
     for i in val:
-        j_v = 0
-        while v[j_v] != i and j_v < len_v:
-            j_v += 1
-        if j_v == len_v:
-            raise ValueError("des éléments de val ne sont pas dans v")
-        l_indices.append(j_v)
+        if i not in corr:
+            ValueError("des éléments de val ne sont pas dans v")
+        l_indices.append(corr[i])
+
     return l_indices

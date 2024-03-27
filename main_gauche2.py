@@ -22,13 +22,9 @@ l_tab = [("A", "Minor", ""), ("D", "Minor", ""), ("G", "Major", ""), ("C", "Majo
 def gen(liste_probas):
     """on suppose que la somme des probas vaut 1
     retourne un indice de la liste"""
-    x = random()
-    i = 0
-    acc = liste_probas[i]
-    while acc < x:
-        i += 1
-        acc += liste_probas[i]
-    return i
+    n = len(liste_probas)
+    liste_probas = notes.norm(liste_probas)
+    return np.random.choice(n,1, p = liste_probas)[0]
 
 def nouvelle_structure_rythmique(probas_rythmes = p_rtm):
     liste_rythmes = []

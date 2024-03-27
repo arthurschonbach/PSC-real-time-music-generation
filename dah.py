@@ -1,1 +1,0 @@
-print("salut à tous les amis c'est flo")

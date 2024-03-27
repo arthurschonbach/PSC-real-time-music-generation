@@ -7,7 +7,11 @@ import notes2 as notes
 import numpy as np
 from time import time
 import gammes2 as gammes
+import random as rd
+import boucle_accords
 
+#J'ai modifié dans if boolnote_r dans new_note, avec la proba que la note soit fausse. Il faut créer le paramètre proba_faux au bon endroit par contre (reste très faible globalement, mais devient plus élevée quand la musique doit être angoissante,...
+#J'ai modifié la façon de changer d'accord (j'ai rajouté tonic_init, quality_init, gamme_init et i_changement_acc; par contre j'ai enlevé l_tab et i_tab.
 
 #test variables
 vecteur_rythme_r = notes.norm(np.array([2, 4, 1, 3, 1, 0, 0, 0])) #le vecteur de proba des rythmes
@@ -16,8 +20,13 @@ vecteur_rythme_l = np.array([0.2, 0.4, 0.15, 0.2, 0.05, 0, 0, 0]) #le vecteur de
 
 vecteur_init = notes.gauss(notes.init_v(), 50)
 
-l_tab = [('A', 'Minor', ''), ('D', 'Minor', ''), ('G', 'Major', ''), ('C', 'Major', '')]
-scale = gammes.gamme('C', 'Major') 
+tonic_init = rd.choice(['A', 'B', 'C', 'D', 'E', 'F', 'G'])
+quality_init = rd.choice(['Major', 'Minor'])
+gamme_init = (tonic_init, quality_init)
+
+#l_tab = [('A', 'Minor', ''), ('D', 'Minor', ''), ('G', 'Major', ''), ('C', 'Major', '')]
+#gamme_init = l_tab[3][:2]
+scale = gammes.gamme(gamme_init) 
 
 bpm = 120
 oneTime = 60/bpm
@@ -25,11 +34,12 @@ oneTime = 60/bpm
 
 # Function to play music
 def play_music(output_port):
-    
-    i_tab = 0 #position dans la progression d'accord
+
+    i_changement_acc = 1
+    #i_tab = 0 #position dans la progression d'accord
     boolnote_r = True #indique le besoin de générer une nouvelle note
     boolnote_l = True
-    len_tab = len(l_tab)
+    #len_tab = len(l_tab)
     v_r = notes.f_gamme(vecteur_init, scale)
     v_l = notes.f_gamme(vecteur_init, scale)
     vrtm = vecteur_rythme_r
@@ -39,7 +49,9 @@ def play_music(output_port):
     i_rtm_l = 0
     len_rtm_l = len(rtm_l)
         
-    root, quality, seventh = l_tab[0]
+    #root, quality, seventh = l_tab[0]
+    seventh = "Dominant"
+    root, quality = gamme_init
     liste_first_tab = gammes.accord(root, quality, seventh)
     
     v_l = notes.f_gamme(v_l, gammes.accord(root, quality, seventh))
@@ -56,8 +68,10 @@ def play_music(output_port):
             
         #on gère le changement d'accord
         if time() >= oneTime*8 + debut_bar: #début de mesure par la fin de la precedente
-            root, quality, seventh = l_tab[i_tab]
-            i_tab = (i_tab + 1)%len_tab
+            #root, quality, seventh = l_tab[i_tab]
+            #i_tab = (i_tab + 1)%len_tab
+            root, quality = boucle_accords.acc_suivi(tonic_init, quality_init, i_changement_acc)
+            i_changement_acc = boucle_accords.nb_suiv(quality_init, i_changement_acc)
             debut_bar += oneTime*8
             
             #main droite
@@ -70,7 +84,7 @@ def play_music(output_port):
         if boolnote_r:
             tp = main_droite.gen(vrtm) + 1 #le nombre de temps de la note que l'on va jouer
             t_end = time() + tp*oneTime
-            new_note = main_droite.gen(v_r)
+            new_note = main_droite.gen(v_r) + rd.choices([-1,0,1], weights=[proba_faux/2, 1-proba_faux, proba_faux/2], k=1)[0] # utilise la proba proba_faux à paramétrer selon l'ambiance
             note_on = mido.Message('note_on', note = new_note, velocity = 64) #on enclenche la note
             output_port.send(note_on) #et on commence à la jouer
             boolnote_r = False #indique qu'une note est jouée

@@ -1,6 +1,4 @@
 import mido
-import pygame
-import threading
 import main_gauche2 as main_gauche
 import main_droite2 as main_droite
 import notes2 as notes
@@ -25,6 +23,7 @@ class Voix :
         self.l_tab = l_tab
         self.vecteur_init = vecteur_init
         self.output_port = output_port
+        self.scale = scale
 
 
         # à décider dans les classes
@@ -47,6 +46,14 @@ class Voix :
         if time() >= self.oneTime*8 + self.debut_bar: #début de mesure par la fin de la precedente
            self.changeMesure()
         
+        """
+        next euclidien
+        if 1  et on joue pas:
+            joue
+        else : 
+            arrêter
+        """
+       
         if self.boolnote: #une nouvelle note
 
             self.t_end = t + self.durationNote()
@@ -100,25 +107,52 @@ class Voix :
         self.boolnote = True
 
 class VoixGauche (Voix) : 
+    
     def __init__(self, vecteur_init, vecteur_rythme, l_tab, scale, output_port, tempo=120) -> None:
         super().__init__(vecteur_init, vecteur_rythme, l_tab, scale, output_port, tempo)
         
         self.channel = 0
         self.program = 0 #piano
 
+
         self.rtm = main_gauche.nouvelle_structure_rythmique(self.vrtm)
         self.i_rtm = 0
         self.len_rtm = len(self.rtm)
+        self.l_indices_l = self.init_l_indices_l()
+        self.l_notes_l = self.gen_l_notes_l()
 
         self.choixInstrument()
     
+    def init_l_indices_l(self):
+        v_l = notes.f_gamme(self.vecteur_init, self.scale)
+        root, quality, seventh = self.l_tab[0]
+        liste_first_tab = gammes.accord(root, quality, seventh)
+        v_l = notes.f_gamme(v_l, gammes.accord(root, quality, seventh))
+        liste_notes_l = []
+    
+        for i in range(0, self.len_rtm):
+            new_note_l = main_droite.gen(v_l)
+            liste_notes_l.append(new_note_l)
+
+        #la liste des positions des notes dans l'accord
+        l_indices_l = notes.search_indices(liste_first_tab, liste_notes_l)
+        print(l_indices_l) 
+        return l_indices_l
+    
+    def gen_l_notes_l(self):
+        root, quality, seventh = self.l_tab[self.i_tab]
+        return gammes.accord(root, quality, seventh)
+    
     def changeMesure(self):
         super().changeMesure()
+        self.l_notes_l = self.gen_l_notes_l()
         self.v = self.vecteur_init
         self.v = notes.f_gamme(self.v, gammes.accord(self.root, self.quality, self.seventh))
+
     
     def create_newNote(self):
-        return super().create_newNote()
+        new_note_l = self.l_notes_l[self.l_indices_l[self.i_rtm]]
+        return new_note_l
     
     def durationNote(self):
         tp_l = self.rtm[self.i_rtm]  #le nombre de temps de la note que l'on va jouer
