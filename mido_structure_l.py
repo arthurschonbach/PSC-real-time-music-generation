@@ -17,7 +17,8 @@ vecteur_rythme_l = np.array([0.2, 0.4, 0.15, 0.2, 0.05, 0, 0, 0]) #le vecteur de
 vecteur_init = notes.gauss(notes.init_v(), 50)
 
 l_tab = [('A', 'Minor', ''), ('D', 'Minor', ''), ('G', 'Major', ''), ('C', 'Major', '')]
-scale = gammes.gamme('C', 'Major') 
+gamme_init = l_tab[3][:2]
+scale = gammes.gamme(gamme_init) 
 
 bpm = 120
 oneTime = 60/bpm
