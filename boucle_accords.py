@@ -72,7 +72,7 @@ def acc_suivi(root_init, qual_init, n):
 		elif n == 6:
 			qual_fin = 'Minor'
 		elif n == 7:
-			qual_fin = "Diminished'
+			qual_fin = "Diminished"
 		else:
 			print("erreur acc_suivi")
 	elif qual_init == 'Minor':

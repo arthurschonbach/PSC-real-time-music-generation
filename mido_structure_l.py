@@ -8,7 +8,7 @@ import numpy as np
 from time import time
 import gammes2 as gammes
 import random as rd
-
+import boucle_accords
 
 #test variables
 vecteur_rythme_r = notes.norm(np.array([2, 4, 1, 3, 1, 0, 0, 0])) #le vecteur de proba des rythmes
@@ -68,7 +68,7 @@ def play_music(output_port):
             #root, quality, seventh = l_tab[i_tab]
             #i_tab = (i_tab + 1)%len_tab
             root, quality = boucle_accords.acc_suivi(tonic_init, quality_init, i_changement_acc)
-            i_changement_acc = boucle_accords.nb_suivi(quality_init, i_changement_acc)
+            i_changement_acc = boucle_accords.nb_suiv(quality_init, i_changement_acc)
             debut_bar += oneTime*8
             
             #main droite
